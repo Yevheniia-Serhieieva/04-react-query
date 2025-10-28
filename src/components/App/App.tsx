@@ -4,7 +4,7 @@ import MovieGrid from "../MovieGrid/MovieGrid";
 import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { fetchMovies } from "../../services/movieService";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import type { Movie } from "../../types/movie";
 import MovieModal from "../MovieModal/MovieModal";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -22,9 +22,6 @@ export default function App() {
     enabled: query !== "",
     placeholderData: keepPreviousData,
   });
-
-  // const totalPages = data?.nbPages ?? 0;
-  // const movies = data?.results ?? [];
 
   const handleSearch = async (newQuery: string) => {
     setQuery(newQuery);
@@ -49,15 +46,12 @@ export default function App() {
     }
   }, [isError]);
 
-  // const handleSelectMovie = (movie: Movie) => setSelectMovie(movie);
-  // const handleCloseModal = () => setSelectMovie(null);
-
   return (
     <>
       <SearchBar onSubmit={handleSearch} />
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
-      {isSuccess && data.results && data.total_pages > 1 && (
+      {isSuccess && data.results && data.total_pages > 0 && (
         <>
           <ReactPaginate
             pageCount={data.total_pages}
@@ -79,6 +73,8 @@ export default function App() {
       {selectMovie && (
         <MovieModal movie={selectMovie} onClose={() => setSelectMovie(null)} />
       )}
+
+      <Toaster position="top-right" reverseOrder={false} />
     </>
   );
 }

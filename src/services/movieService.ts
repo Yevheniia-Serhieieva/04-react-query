@@ -14,7 +14,7 @@ export const fetchMovies = async (
 
   const options = {
     method: "GET",
-    URL: `https://api.themoviedb.org/3/search/movie`,
+    url: `https://api.themoviedb.org/3/search/movie`,
     params: {
       query,
       page,
@@ -25,10 +25,7 @@ export const fetchMovies = async (
     },
   };
 
-  const response = await axios.get<MoviesHttpResponse>(options.URL, options);
+  const response = await axios.get<MoviesHttpResponse>(options.url, options);
 
-  return {
-    results: response.data.results,
-    total_pages: response.data.total_pages,
-  };
+  return response.data;
 };
